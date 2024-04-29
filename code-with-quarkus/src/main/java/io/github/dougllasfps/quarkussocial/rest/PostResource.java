@@ -63,7 +63,7 @@ public class PostResource {
         List<Post> list = query.list();
 
         //list.sort(Comparator.comparing(Post::"dateTime").reversed());
-        //falta ordenar o post pelo dateTime em ordem decrescente
+        //falta ordenar o post pelo dateTime em ordem decrescente..
 
         var postResponseList = list.stream()
                 .map(post -> PostResponse.fromEntity(post))
