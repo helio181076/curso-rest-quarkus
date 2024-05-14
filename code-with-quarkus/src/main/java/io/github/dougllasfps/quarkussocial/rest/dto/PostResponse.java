@@ -4,7 +4,6 @@ import io.github.dougllasfps.quarkussocial.domain.model.Post;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class PostResponse {
@@ -14,7 +13,7 @@ public class PostResponse {
     public static PostResponse fromEntity(Post post){
         var response = new PostResponse();
         response.setText(post.getText());
-        response.setDateTime(post.getDataTime());
+        response.setDateTime(post.getDateTime());
         return response;
     }
 }
