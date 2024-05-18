@@ -7,8 +7,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.json.bind.JsonbBuilder;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.net.URL;
 import java.util.List;
@@ -18,6 +17,7 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserResourceTest {
 
     @TestHTTPResource("/users")
@@ -25,6 +25,7 @@ class UserResourceTest {
 
     @Test
     @DisplayName("Should create an user successfully.")
+    @Order(1)
     public void createUserTest(){
         var createUserRequest = new CreateUserRequest();
         createUserRequest.setName("Fulano");
@@ -44,6 +45,7 @@ class UserResourceTest {
 
     @Test
     @DisplayName("Should return error when json is not valid.")
+    @Order(2)
     public void createUserValidationErrorTest(){
         var createUserRequest = new CreateUserRequest();
         createUserRequest.setName(null);
@@ -68,6 +70,7 @@ class UserResourceTest {
 
     @Test
     @DisplayName("Should list all users.")
+    @Order(3)
     public void listAllUsersTest(){
         given().contentType(ContentType.JSON)
                 .when()
