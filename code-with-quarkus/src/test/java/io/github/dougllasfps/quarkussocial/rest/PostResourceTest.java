@@ -54,7 +54,7 @@ class PostResourceTest {
         var userNotFollower = new User();
         userNotFollower.setAge(33);
         userNotFollower.setName("Cicrano");
-        userRepository.persist(user);
+        userRepository.persist(userNotFollower);
         userNotFollowerId = userNotFollower.getId();
 
         //usuário seguidor
@@ -62,7 +62,7 @@ class PostResourceTest {
         userFollower.setAge(31);
         userFollower.setName("Terceiro");
         userRepository.persist(userFollower);
-        userFollowerId = userNotFollower.getId();
+        userFollowerId = userFollower.getId();
 
         Follower follower = new Follower();
         follower.setUser(user);
@@ -113,39 +113,39 @@ class PostResourceTest {
                  .then().statusCode(404);
     }
 
-//    @Test
-//    @DisplayName("should return 400 when followerId header is not present")
-//    public void listPostFollowerHeaderNotSendTest(){
-//        given().pathParam("userId", userId).when().get()
-//                .then().statusCode(400).body(Matchers.is("You forgot the header followerId"));
-//    }
+    @Test
+    @DisplayName("should return 400 when followerId header is not present")
+    public void listPostFollowerHeaderNotSendTest(){
+        given().pathParam("userId", userId).when().get()
+                .then().statusCode(400).body(Matchers.is("You forgot the header followerId."));
+    }
 
-//    @Test
-//    @DisplayName("should return 400 when follower doesn´t exist")
-//    public void listPostFollowerNotFoundTest(){
-//
-//        var inexistentFollowerId = 999;
-//
-//        given().pathParam("userId", userId).header("followerId", inexistentFollowerId)
-//                .when().get().then().statusCode(400)
-//                .body(Matchers.is("Inexistente followerId"));
-//    }
+    @Test
+    @DisplayName("should return 400 when follower doesn´t exist")
+    public void listPostFollowerNotFoundTest(){
 
-//    @Test
-//    @DisplayName("should return 403 when follower isn´t a follower")
-//    public void listPostNotAFollower(){
-//        given().pathParam("userId", userId).header("followerId", userNotFollowerId)
-//                .when().get().then().statusCode(403)
-//                .body(Matchers.is("You can´t see these posts"));
-//    }
+        var inexistentFollowerId = 999;
 
-//    @Test
-//    @DisplayName("should return posts")
-//    public void listPostsTest(){
-//        given().pathParam("userId", userId).header("followerId", userFollowerId)
-//                .when().get().then().statusCode(200)
-//                .body("size()", Matchers.is(1));
-//    }
+        given().pathParam("userId", userId).header("followerId", inexistentFollowerId)
+                .when().get().then().statusCode(400)
+                .body(Matchers.is("Inexistent followerId."));
+    }
+
+    @Test
+    @DisplayName("should return 403 when follower isn´t a follower")
+    public void listPostNotAFollower(){
+        given().pathParam("userId", userId).header("followerId", userNotFollowerId)
+                .when().get().then().statusCode(403)
+                .body(Matchers.is("You can´t see these posts."));
+    }
+
+    @Test
+    @DisplayName("should return posts")
+    public void listPostsTest(){
+        given().pathParam("userId", userId).header("followerId", userFollowerId)
+                .when().get().then().statusCode(200)
+                .body("size()", Matchers.is(1));
+    }
 
 
 }
